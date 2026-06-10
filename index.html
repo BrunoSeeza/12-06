@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uma Surpresa Para Você 💜</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</style>
+</head>
+<body>
+
+<!-- Partículas -->
+<canvas id="particulas"></canvas>
+
+<!-- Ornamentos -->
+<div class="ornamento ornamento-1"></div>
+<div class="ornamento ornamento-2"></div>
+
+<!-- Música de fundo -->
+<audio id="musica" src="musica.mp3.mp3" loop></audio>
+
+<!-- Controle de música -->
+<div id="music-control">
+  <button id="btn-play-pause" onclick="toggleMusica()" title="Pausar/Tocar">
+    <span id="icone-musica">▶</span>
+  </button>
+  <div id="volume-wrap">
+    <span class="vol-icone">🔊</span>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5" oninput="mudarVolume(this.value)">
+  </div>
+</div>
+
+<!-- ===== TELA 1 - INTRO ===== -->
+<div id="tela1" class="tela ativa">
+  <div class="intro-box">
+    <span class="coracao-anim">💜</span>
+    <h1 class="intro-titulo">Está preparada para essa<br>surpresa feita com todo<br>amor e carinho?</h1>
+    <p class="intro-sub">Uma mensagem só para você</p>
+    <button class="btn-continuar" onclick="irPara(2)">Estou pronta ✨</button>
+  </div>
+</div>
+
+<!-- ===== TELA 2 - MURAL ===== -->
+<div id="tela2" class="tela">
+  <p class="mural-titulo">Nossos momentos especiais 🌸</p>
+  <div class="mural-grid" id="mural-grid">
+    <!-- 6 cards gerados pelo JS -->
+  </div>
+  <p class="mural-instrucao">Clique em cada foto para reviver o momento 💜</p>
+  <button class="btn-proximo" onclick="irPara(3)">Continuar →</button>
+</div>
+
+<!-- Modal foto -->
+<div id="modal-foto" onclick="fecharModal(event)">
+  <div class="modal-inner">
+    <div class="modal-img-wrap" id="modal-img-wrap"></div>
+    <p class="modal-msg" id="modal-msg"></p>
+    <button class="modal-fechar" onclick="fecharModal()">Fechar</button>
+  </div>
+</div>
+
+<!-- ===== TELA 3 - SENHA ===== -->
+<div id="tela3" class="tela">
+  <div class="senha-box">
+    <span class="senha-icone">🔐</span>
+    <h2 class="senha-titulo">Uma datinha especial…</h2>
+    <p class="senha-sub">Você sabe qual é, não sabe? 💜</p>
+    <div class="senha-dots" id="senha-dots">
+      <div class="dot" id="d1"></div>
+      <div class="dot" id="d2"></div>
+      <div class="dot" id="d3"></div>
+      <div class="dot" id="d4"></div>
+    </div>
+    <div class="teclado">
+      <button class="tecla" onclick="digitarSenha('1')">1</button>
+      <button class="tecla" onclick="digitarSenha('2')">2</button>
+      <button class="tecla" onclick="digitarSenha('3')">3</button>
+      <button class="tecla" onclick="digitarSenha('4')">4</button>
+      <button class="tecla" onclick="digitarSenha('5')">5</button>
+      <button class="tecla" onclick="digitarSenha('6')">6</button>
+      <button class="tecla" onclick="digitarSenha('7')">7</button>
+      <button class="tecla" onclick="digitarSenha('8')">8</button>
+      <button class="tecla" onclick="digitarSenha('9')">9</button>
+      <button class="tecla tecla-del" onclick="apagarSenha()">⌫</button>
+      <button class="tecla" onclick="digitarSenha('0')">0</button>
+      <button class="tecla" onclick="digitarSenha('0')" style="visibility:hidden"></button>
+    </div>
+    <p class="senha-erro" id="senha-erro">Hmm… tenta de novo, meu bem 💜</p>
+  </div>
+</div>
+
+<!-- ===== TELA 4 - CARTA ===== -->
+<div id="tela4" class="tela">
+  <div class="carta-container">
+    <p class="carta-header">Uma carta para você, meu amor…</p>
+
+    <div class="carta-bloco" id="cb1">
+      <p class="carta-texto">
+        Antes de tudo, saiba que cada palavra aqui foi escrita com o coração cheio de você.
+        Não é fácil colocar em palavras o que sinto, mas vou tentar — porque você merece saber
+        o quanto significa para mim.
+      </p>
+    </div>
+
+    <div class="carta-bloco" id="cb2">
+      <div class="carta-divisor">
+        <span class="carta-divisor-linha"></span>
+        <span class="carta-divisor-icone">💜</span>
+        <span class="carta-divisor-linha"></span>
+      </div>
+    </div>
+
+    <div class="carta-bloco" id="cb3">
+      <p class="carta-texto">
+        Desde que você entrou na minha vida, tudo ficou mais colorido — mais cheio de sentido.
+        São os detalhes que eu mais amo em você: o seu sorriso que ilumina qualquer ambiente,
+        a forma como você ri de coisas simples, o cuidado que você tem com tudo e com todos ao seu redor.
+      </p>
+    </div>
+
+    <div class="carta-bloco" id="cb4">
+      <div class="carta-destaque">
+        <p class="carta-destaque-texto">"Não existe lugar no mundo onde eu me sinta tão bem quanto do seu lado."</p>
+      </div>
+    </div>
+
+    <div class="carta-bloco" id="cb5">
+      <p class="carta-texto">
+        Tem dias que eu paro e fico pensando em como eu sou sortudo de estar ao seu lado.
+        De poder te chamar de minha. De poder dividir os dias, os sonhos, os planos com você.
+        Não existe lugar no mundo onde eu me sinta tão bem quanto do seu lado.
+      </p>
+    </div>
+
+    <div class="carta-bloco" id="cb6">
+      <div class="carta-divisor">
+        <span class="carta-divisor-linha"></span>
+        <span class="carta-divisor-icone">🌸</span>
+        <span class="carta-divisor-linha"></span>
+      </div>
+    </div>
+
+    <div class="carta-bloco" id="cb7">
+      <p class="carta-texto">
+        Obrigado por cada abraço, cada risada, cada momento dividido — os especiais e os simples também.
+        Obrigado por ser tão você. Essa surpresa é pequena perto de tudo que você merece,
+        mas é feita com todo o amor que eu tenho para te dar.
+      </p>
+    </div>
+
+    <div class="carta-bloco" id="cb8">
+      <p class="carta-assinatura">Com todo o meu amor, sempre 💜</p>
+    </div>
+
+    <button class="btn-proxima-tela" onclick="irPara(5)">Ver a mensagem final 💜</button>
+  </div>
+</div>
+
+<!-- ===== TELA 5 - FINAL ===== -->
+<div id="tela5" class="tela">
+  <div class="final-box">
+    <span class="final-coracao">💜</span>
+    <h2 class="final-titulo">Você é a pessoa que eu quero<br>ao meu lado para o<br>resto da minha vida.</h2>
+    <p class="final-sub">Eu te amo muito. Mais do que as palavras conseguem dizer.<br>Feliz Dia dos Namorados, meu amor. 🌸</p>
+    <span class="final-flores">🌸 💜 🌸</span>
+    <button class="btn-recomecar" onclick="irPara(1)">Recomeçar do início</button>
+  </div>
+</div>
+
+<script>
+// ===== DADOS DAS FOTOS DO MURAL =====
+const fotos = [
+  {
+    src: 'ft1.jpeg', // Coloque o caminho da foto 1 aqui: ex: "foto1.jpg"
+    emoji: '💜',
+    mensagem: 'Esse momento ficou guardado no meu coração para sempre. Você estava tão linda…'
+  },
+  {
+    src: 'ft2.jpeg',
+    emoji: '🌸',
+    mensagem: 'Me lembro de cada detalhe desse dia. Estar do seu lado é sempre a melhor parte.'
+  },
+  {
+    src: 'ft3.jpeg',
+    emoji: '✨',
+    mensagem: 'Esse sorriso. Esse sorriso é o que me faz querer fazer você feliz todos os dias.'
+  },
+  {
+    src: 'ft4.jpeg',
+    emoji: '🫶',
+    mensagem: 'A gente não precisa de muito para ser feliz — só de estar junto assim.'
+  },
+  {
+    src: 'ft5.jpeg',
+    emoji: '🌙',
+    mensagem: 'Tem dias que eu olho pra você e não acredito que tanta coisa linda pode estar em uma só pessoa.'
+  },
+  {
+    src: 'ft6.jpeg',
+    emoji: '💫',
+    mensagem: 'Cada foto nossa é uma prova de que a vida fica mais bonita quando você está nela.'
+  }
+];
+
+// ===== MONTAR MURAL =====
+const grid = document.getElementById('mural-grid');
+fotos.forEach((foto, i) => {
+  const card = document.createElement('div');
+  card.className = 'foto-card';
+  card.onclick = () => abrirModal(i);
+  if (foto.src) {
+    card.innerHTML = `<img src="${foto.src}" alt="Foto ${i+1}">`;
+  } else {
+    card.innerHTML = `<div class="foto-placeholder"><span>${foto.emoji}</span><p>Foto ${i+1}<br><small>Adicione sua foto</small></p></div>`;
+  }
+  grid.appendChild(card);
+});
+
+// ===== MODAL =====
+function abrirModal(i) {
+  const foto = fotos[i];
+  const wrap = document.getElementById('modal-img-wrap');
+  if (foto.src) {
+    wrap.innerHTML = `<img src="${foto.src}" alt="Foto ${i+1}">`;
+  } else {
+    wrap.innerHTML = `<div class="modal-img-placeholder">${foto.emoji}</div>`;
+  }
+  document.getElementById('modal-msg').textContent = foto.mensagem;
+  document.getElementById('modal-foto').classList.add('aberto');
+}
+function fecharModal(e) {
+  if (!e || e.target === document.getElementById('modal-foto') || e.target.classList.contains('modal-fechar')) {
+    document.getElementById('modal-foto').classList.remove('aberto');
+  }
+}
+
+// ===== SENHA =====
+let senhaAtual = '';
+const SENHA_CORRETA = '2011';
+
+function digitarSenha(n) {
+  if (senhaAtual.length >= 4) return;
+  senhaAtual += n;
+  atualizarDots();
+  if (senhaAtual.length === 4) {
+    setTimeout(verificarSenha, 300);
+  }
+}
+function apagarSenha() {
+  senhaAtual = senhaAtual.slice(0, -1);
+  atualizarDots();
+  document.getElementById('senha-erro').classList.remove('visivel');
+}
+function atualizarDots() {
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById('d' + i).classList.toggle('preenchido', i <= senhaAtual.length);
+  }
+}
+function verificarSenha() {
+  if (senhaAtual === SENHA_CORRETA) {
+    irPara(4);
+    senhaAtual = '';
+    atualizarDots();
+  } else {
+    document.getElementById('senha-erro').classList.add('visivel');
+    setTimeout(() => {
+      senhaAtual = '';
+      atualizarDots();
+      document.getElementById('senha-erro').classList.remove('visivel');
+    }, 1200);
+  }
+}
+
+// ===== NAVEGAÇÃO =====
+function irPara(num) {
+  document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+  document.getElementById('tela' + num).classList.add('ativa');
+  if (num === 4) iniciarCarta();
+  window.scrollTo(0, 0);
+}
+
+// ===== CARTA - SCROLL REVEAL =====
+function iniciarCarta() {
+  const blocos = document.querySelectorAll('.carta-bloco');
+  blocos.forEach((b, i) => {
+    setTimeout(() => b.classList.add('visivel'), i * 400);
+  });
+}
+
+// ===== MÚSICA DE FUNDO =====
+const musica = document.getElementById('musica');
+const btnPlayPause = document.getElementById('btn-play-pause');
+const iconeMusica = document.getElementById('icone-musica');
+musica.volume = 0.5;
+
+// Tenta tocar automaticamente; se bloqueado, toca no primeiro clique
+musica.play().catch(() => {
+  document.addEventListener('click', () => {
+    musica.play();
+    iconeMusica.textContent = '❚❚';
+  }, { once: true });
+});
+
+musica.addEventListener('play', () => iconeMusica.textContent = '❚❚');
+musica.addEventListener('pause', () => iconeMusica.textContent = '▶');
+
+function toggleMusica() {
+  if (musica.paused) {
+    musica.play();
+  } else {
+    musica.pause();
+  }
+}
+
+function mudarVolume(val) {
+  musica.volume = val;
+}
+
+// ===== PARTÍCULAS =====
+const canvas = document.getElementById('particulas');
+const ctx = canvas.getContext('2d');
+let W, H, parts = [];
+
+function redimensionar() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+redimensionar();
+window.addEventListener('resize', redimensionar);
+
+function criarParticula() {
+  return {
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: Math.random() * 2 + 0.5,
+    dx: (Math.random() - 0.5) * 0.3,
+    dy: -Math.random() * 0.4 - 0.1,
+    alpha: Math.random() * 0.5 + 0.1,
+    cor: Math.random() > 0.5 ? '168,85,247' : '192,132,252'
+  };
+}
+
+for (let i = 0; i < 80; i++) parts.push(criarParticula());
+
+function animarParticulas() {
+  ctx.clearRect(0, 0, W, H);
+  parts.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${p.cor},${p.alpha})`;
+    ctx.fill();
+    p.x += p.dx;
+    p.y += p.dy;
+    if (p.y < -10 || p.x < -10 || p.x > W + 10) {
+      Object.assign(p, criarParticula(), { y: H + 10, x: Math.random() * W });
+    }
+  });
+  requestAnimationFrame(animarParticulas);
+}
+animarParticulas();
+</script>
+</body>
+</html>
